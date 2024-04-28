@@ -159,7 +159,7 @@ def ResNet50(input_shape = (64, 64, 3), classes = 6, activation = "softmax"):
     X = ZeroPadding2D((3, 3))(X_input)
     
     # Stage 1
-    X = Conv2D(64, (7, 7), strides = (2, 2), kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Conv2D(64, (7, 7), strides = (2, 2))(X)
     X = BatchNormalization(axis = 3)(X)
     X = Activation('relu')(X)
     X = MaxPooling2D((3, 3), strides=(2, 2))(X)
@@ -204,10 +204,8 @@ def ResNet50(input_shape = (64, 64, 3), classes = 6, activation = "softmax"):
     X = Flatten()(X)
     X = Dense(512,activation='relu')(X)
     
-    if activation == "sigmoid":
-        X = Dense(classes, activation='sigmoid', kernel_initializer = glorot_uniform(seed=0))(X)
-    else:
-         X = Dense(classes, activation='softmax', kernel_initializer = glorot_uniform(seed=0))(X)
+
+    X = Dense(classes, activation=activation)(X)
     
     # Create model
     model = Model(inputs = X_input, outputs = X)
